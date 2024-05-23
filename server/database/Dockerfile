@@ -8,6 +8,7 @@ ADD review.js .
 ADD dealership.js .
 ADD data/dealerships.json .
 ADD data/reviews.json .
+COPY package*.json ./
 COPY . .
 RUN npm install
 
