@@ -26,7 +26,7 @@ def get_cars(request):
     for car_model in car_models:
         cars.append({"CarModel": car_model.name,
                      "CarMake": car_model.car_make.name})
-    return JsonResponse({"CarModels":cars})
+    return JsonResponse({"CarModels": cars})
 
 
 # Create a `login_request` view to handle sign in request
@@ -56,7 +56,6 @@ def logout_request(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-    context = {}
 
     data = json.loads(request.body)
     username = data['userName']
@@ -69,8 +68,8 @@ def registration(request):
     try:
         User.objects.get(username=username)
         username_exist = True
-    except:
-        logger.debug("{} is a new user".format(username))
+    except Exception:
+        logger.debug(f"{username} is a new user")
 
     if not username_exist:
         user = User.objects.create_user(
@@ -89,7 +88,8 @@ def registration(request):
         return JsonResponse(data)
     
 
-#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+#Update the `get_dealerships` render list of
+#dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
     if (state == "All"):
         endpoint = "/fetchDealers"
@@ -112,17 +112,17 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse({"status": 200, "reviews": reviews})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
-    
+
 
 # Create a `get_dealer_details` view to render the dealer details
 def get_dealer_details(request, dealer_id):
     if (dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status": 200,"dealer": dealership})
+        return JsonResponse({"status": 200, "dealer": dealership})
     else:
-        return JsonResponse({"status": 400,"message": "Bad Request"})
-    
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 # Create a `add_review` view to submit a review
 def add_review(request):
@@ -131,8 +131,8 @@ def add_review(request):
         try:
             post_review(data)
             return JsonResponse({"status": 200})
-        except Exception as e:
+        except Exception:
             return JsonResponse({"status": 401,
-                                 f"message": "Error in posting review {e}"})
+                                 "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
