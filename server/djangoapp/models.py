@@ -28,6 +28,6 @@ class CarModel(models.Model):
                                    MaxValueValidator(2024),
                                    MinValueValidator(2015)
                                ])
-    
+
     def __str__(self):
         return self.name
